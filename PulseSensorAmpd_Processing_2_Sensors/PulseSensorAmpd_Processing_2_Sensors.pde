@@ -3,6 +3,7 @@ DISPLAYS MULTIPLE PULSE SENSOR DATA STREAMS
 THIS PROGRAM WORKS WITH PulseSensorAmped_n_Sensors ARDUINO CODE
 
 PRESS 'S' OR 's' KEY TO SAVE A PICTURE OF THE SCREEN IN SKETCH FOLDER (.jpg)
+PRESS 'R' OR 'r' KEY TO RESET THE DATA TRACES
 MADE BY JOEL MURPHY WINTER 2016, MODIFIED WINTER 2017
 UPDATED BY JOEL MURPHY SUMMER 2016 WITH SERIAL PORT LOCATOR TOOL
 UPDATED BY JOEL MURPHY WINTER 2017 WITH IMPROVED SERIAL PORT SELECTOR TOOL
@@ -85,18 +86,8 @@ void setup() {
   ScaledBPM = new int [numSensors][BPMWindowWidth];           // initialize BPM waveform array
 
   // set the visualizer lines to 0
-  for (int i=0; i<numSensors; i++) {
-    BPM[i] = 0;
-    for(int j=0; j<BPMWindowWidth; j++){
-      ScaledBPM[i][j] = BPMWindowY[i] + BPMWindowHeight;
-    }
-  }
-  for (int i=0; i<numSensors; i++) {
-    Sensor[i] = 512;
-    for (int j=0; j<PulseWindowWidth; j++) {
-      RawPPG[i][j] = 1024 - Sensor[i]; // initialize the pulse window data line to V/2
-    }
-  }
+  resetDataTraces();
+
  background(0);
  noStroke();
  // DRAW OUT THE PULSE WINDOW AND BPM WINDOW RECTANGLES
@@ -262,12 +253,28 @@ void autoScanPorts(){
 }
 }
 
+void resetDataTraces(){
+  for (int i=0; i<numSensors; i++) {
+    BPM[i] = 0;
+    for(int j=0; j<BPMWindowWidth; j++){
+      ScaledBPM[i][j] = BPMWindowY[i] + BPMWindowHeight;
+    }
+  }
+  for (int i=0; i<numSensors; i++) {
+    Sensor[i] = 512;
+    for (int j=0; j<PulseWindowWidth; j++) {
+      RawPPG[i][j] = 1024 - Sensor[i]; // initialize the pulse window data line to V/2
+    }
+  }
+}
 
 void printDataToScreen(){ // PRINT THE DATA AND VARIABLE VALUES
     fill(eggshell);                                       // get ready to print text
-    text("Pulse Sensor Amped Multi Visualizer", 245, 30);     // tell them what you are
+    text("Pulse Sensor Amped 2 Sensor Visualizer", 245, 30);     // tell them what you are
     for (int i=0; i<numSensors; i++) {
-      text(BPM[i] + " BPM", 800, BPMWindowY[i] +185);//215                           // print the Beats Per Minute
-      text("IBI " + IBI[i] + "mS", 800, BPMWindowY[i] +160);//245                    // print the time between heartbeats in mS
+      text("Sensor # " + (i+1), 800, BPMWindowY[i] + 220);
+      text(BPM[i] + " BPM", 800, BPMWindowY[i] +185);// 215          // print the Beats Per Minute
+      text("IBI " + IBI[i] + "mS", 800, BPMWindowY[i] + 160);// 245   // print the time between heartbeats in mS
+
     }
 }

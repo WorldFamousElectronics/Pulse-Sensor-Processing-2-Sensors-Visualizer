@@ -21,7 +21,7 @@ void mousePressed(){
         }else
 
         try{
-          port = new Serial(this, Serial.list()[i], 115200);  // make sure Arduino is talking serial at this baud rate
+          port = new Serial(this, Serial.list()[i], 250000);  // make sure Arduino is talking serial at this baud rate
           delay(1000);
           println(port.read());
           port.clear();            // flush buffer
@@ -52,6 +52,10 @@ void keyPressed(){
    case 's':    // pressing 's' or 'S' will take a jpg of the processing window
    case 'S':
      saveFrame("heartLight-####.jpg");    // take a shot of that!
+     break;
+   case 'r':
+   case 'R':
+     resetDataTraces();
      break;
 
    default:

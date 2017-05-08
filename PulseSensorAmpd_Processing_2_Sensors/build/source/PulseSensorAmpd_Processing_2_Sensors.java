@@ -103,18 +103,8 @@ public void setup() {
   ScaledBPM = new int [numSensors][BPMWindowWidth];           // initialize BPM waveform array
 
   // set the visualizer lines to 0
-  for (int i=0; i<numSensors; i++) {
-    BPM[i] = 0;
-    for(int j=0; j<BPMWindowWidth; j++){
-      ScaledBPM[i][j] = BPMWindowY[i] + BPMWindowHeight;
-    }
-  }
-  for (int i=0; i<numSensors; i++) {
-    Sensor[i] = 512;
-    for (int j=0; j<PulseWindowWidth; j++) {
-      RawPPG[i][j] = 1024 - Sensor[i]; // initialize the pulse window data line to V/2
-    }
-  }
+  resetDataTraces();
+
  background(0);
  noStroke();
  // DRAW OUT THE PULSE WINDOW AND BPM WINDOW RECTANGLES
@@ -280,13 +270,29 @@ public void autoScanPorts(){
 }
 }
 
+public void resetDataTraces(){
+  for (int i=0; i<numSensors; i++) {
+    BPM[i] = 0;
+    for(int j=0; j<BPMWindowWidth; j++){
+      ScaledBPM[i][j] = BPMWindowY[i] + BPMWindowHeight;
+    }
+  }
+  for (int i=0; i<numSensors; i++) {
+    Sensor[i] = 512;
+    for (int j=0; j<PulseWindowWidth; j++) {
+      RawPPG[i][j] = 1024 - Sensor[i]; // initialize the pulse window data line to V/2
+    }
+  }
+}
 
 public void printDataToScreen(){ // PRINT THE DATA AND VARIABLE VALUES
     fill(eggshell);                                       // get ready to print text
-    text("Pulse Sensor Amped Multi Visualizer", 245, 30);     // tell them what you are
+    text("Pulse Sensor Amped 2 Sensor Visualizer", 245, 30);     // tell them what you are
     for (int i=0; i<numSensors; i++) {
-      text(BPM[i] + " BPM", 800, BPMWindowY[i] +185);//215                           // print the Beats Per Minute
-      text("IBI " + IBI[i] + "mS", 800, BPMWindowY[i] +160);//245                    // print the time between heartbeats in mS
+      text("Sensor # " + (i+1), 800, BPMWindowY[i] + 220);
+      text(BPM[i] + " BPM", 800, BPMWindowY[i] +185);// 215          // print the Beats Per Minute
+      text("IBI " + IBI[i] + "mS", 800, BPMWindowY[i] + 160);// 245   // print the time between heartbeats in mS
+
     }
 }
 
@@ -312,7 +318,7 @@ public void mousePressed(){
         }else
 
         try{
-          port = new Serial(this, Serial.list()[i], 115200);  // make sure Arduino is talking serial at this baud rate
+          port = new Serial(this, Serial.list()[i], 250000);  // make sure Arduino is talking serial at this baud rate
           delay(1000);
           println(port.read());
           port.clear();            // flush buffer
@@ -343,6 +349,10 @@ public void keyPressed(){
    case 's':    // pressing 's' or 'S' will take a jpg of the processing window
    case 'S':
      saveFrame("heartLight-####.jpg");    // take a shot of that!
+     break;
+   case 'r':
+   case 'R':
+     resetDataTraces();
      break;
 
    default:
@@ -431,11 +441,12 @@ try{
      heart[i] = 20;                          // begin heart image 'swell' timer
    }
  if (inData.charAt(0) == 'M'+i){             // leading 'M' means IBI data
-     inData = inData.substring(1);           // cut off the leading '0'
+     inData = inData.substring(1);           // cut off the leading 'M'
      IBI[i] = PApplet.parseInt(inData);                   // convert the string to usable int
    }
  }
   } catch(Exception e) {
+    // print("Serial Error: ");
     // println(e.toString());
   }
 

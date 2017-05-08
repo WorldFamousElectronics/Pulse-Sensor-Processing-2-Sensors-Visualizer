@@ -19,11 +19,12 @@ try{
      heart[i] = 20;                          // begin heart image 'swell' timer
    }
  if (inData.charAt(0) == 'M'+i){             // leading 'M' means IBI data
-     inData = inData.substring(1);           // cut off the leading '0'
+     inData = inData.substring(1);           // cut off the leading 'M'
      IBI[i] = int(inData);                   // convert the string to usable int
    }
  }
   } catch(Exception e) {
+    // print("Serial Error: ");
     // println(e.toString());
   }
 
