@@ -18,7 +18,8 @@ public class PulseSensorAmpd_Processing_2_Sensors extends PApplet {
 
 /*
 DISPLAYS MULTIPLE PULSE SENSOR DATA STREAMS
-THIS PROGRAM WORKS WITH PulseSensorAmped_n_Sensors ARDUINO CODE
+FOLLOW THIS TUTORIAL https://pulsesensor.com/pages/two-or-more-pulse-sensors
+TO GET FAMILIAR WITH WORKING WITH MORE THAN ONE PULSE SENSOR
 
 PRESS 'S' OR 's' KEY TO SAVE A PICTURE OF THE SCREEN IN SKETCH FOLDER (.jpg)
 PRESS 'R' OR 'r' KEY TO RESET THE DATA TRACES
@@ -35,7 +36,7 @@ THIS CODE PROVIDED AS IS, WITH NO CLAIMS OF FUNCTIONALITY OR EVEN IF IT WILL WOR
 PFont font;
 
 Serial port;
-int numSensors = 2;
+int numSensors = 2; // Change this if you want to use more sensors
 
 int[] Sensor;      // HOLDS PULSE SENSOR DATA FROM ARDUINO
 int[] IBI;         // HOLDS TIME BETWEN HEARTBEATS FROM ARDUINO
